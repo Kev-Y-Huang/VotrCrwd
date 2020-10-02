@@ -7,25 +7,26 @@ class GeoInfo extends React.Component {
       longitude: "",
       latitude: "",
       postalCode: ""
-    }
+    };
   }
 
   loadGeoInfo = (position) => {
-      this.setState({latitude: position.coords.latitude});
-      console.log("Latitude: ", this.state.latitude);
-      this.setState({longitude: position.coords.longitude});
-      console.log("Longitude: ", this.state.longitude);
+    this.setState({latitude: position.coords.latitude});
+    console.log("Latitude: ", this.state.latitude);
+    this.setState({longitude: position.coords.longitude});
+    console.log("Longitude: ", this.state.longitude);
   };
 
-  showError (error) {
-  switch(error.code) {
-    case error.PERMISSION_DENIED:
-      console.log("User denied the request for Geolocation.");
-      alert("ayo fam give us permission to stalk you smh");
-      break;
-    }};
+  showError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        console.log("User denied the request for Geolocation.");
+        alert("ayo fam give us permission to stalk you smh");
+        break;
+    }
+  };
 
-  getGeoLocation () {
+  getGeoLocation() {
     navigator.geolocation.getCurrentPosition(this.loadGeoInfo, this.showError);
   }
 
@@ -38,8 +39,8 @@ class GeoInfo extends React.Component {
     }
   }
 
-  render(){
-    return(null);
+  render() {
+    return null;
   }
 }
 
