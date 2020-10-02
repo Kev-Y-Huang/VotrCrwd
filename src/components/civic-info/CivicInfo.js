@@ -1,9 +1,7 @@
 import React from "react";
 import axios from "axios";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
+import {Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
+import LocationCard from "../cards/LocationCard";
 
 class CivicInfo extends React.Component {
   constructor(props) {
@@ -15,6 +13,7 @@ class CivicInfo extends React.Component {
       city: "",
       stateName: "",
       info: null,
+      locations: [],
       voterInfo: {
         ballotInfoUrl: "",
         votingLocationFinderUrl: ""
@@ -30,14 +29,43 @@ class CivicInfo extends React.Component {
     };
     try {
       const val = await axios.get(`https://www.googleapis.com/civicinfo/v2/${method}`, {params: options});
-      console.log(val);
+      if (val.data.earlyVoteSites) {
+        val.data.earlyVoteSites.forEach(location => {
+          this.setState(state => {
+            const modifiedLocation = location;
+            modifiedLocation.type = "Early Voting Location";
+            const locations = [...state.locations, modifiedLocation];
+            return {locations};
+          });
+        });
+      }
+      if (val.data.dropOffLocations) {
+        val.data.dropOffLocations.forEach(location => {
+          this.setState(state => {
+            const modifiedLocation = location;
+            modifiedLocation.type = "Drop Off Location";
+            const locations = [...state.locations, modifiedLocation];
+            return {locations};
+          });
+        });
+      }
+      if (val.data.pollingLocations) {
+        val.data.pollingLocations.forEach(location => {
+          this.setState(state => {
+            const modifiedLocation = location;
+            modifiedLocation.type = "Polling Location";
+            const locations = [...state.locations, modifiedLocation];
+            return {locations};
+          });
+        });
+      }
       if (!val.data.earlyVoteSites) {
         this.setState({
           voterInfo: val.data.state[0].electionAdministrationBody
         });
         this.handleClickOpen();
       } else {
-        this.setState({info: val.data.earlyVoteSites.map(location => location.address.city)})
+        this.setState({info: val.data.earlyVoteSites.map(location => location.address.city)});
       }
       this.setState(val.data);
     } catch (e) {
@@ -54,35 +82,46 @@ class CivicInfo extends React.Component {
   render() {
     return (
       <div>
-        <input
-          name={"address"}
-          placeholder={"Address..."}
-          onChange={this.handleChange}
-          value={this.state.address}
-        />
-        <br/>
-        <input
-          name={"city"}
-          placeholder={"City..."}
-          onChange={this.handleChange}
-          value={this.state.city}
-        />
-        <br/>
-        <input
-          name={"stateName"}
-          placeholder={"State..."}
-          onChange={this.handleChange}
-          value={this.state.stateName}
-        />
-        <br/>
-
-        Early voting locations: {this.state.info ? this.state.info.map(location => location.concat(" ")) : "null"}
-        <br/>
-
-        <button
-          onClick={() => this.loadCivicInfo("voterinfo", this.state.address, this.state.city, this.state.stateName)}>
+        <Box display="flex" flexDirection={"row"}>
+          <Box m={2}>
+            <TextField
+              name={"address"}
+              id={"outlined-basic"}
+              label={"Address"}
+              variant={"outlined"}
+              onChange={this.handleChange}
+              value={this.state.address}
+            />
+          </Box>
+          <Box m={2}>
+            <TextField
+              name={"city"}
+              id={"outlined-basic"}
+              label={"City"}
+              variant={"outlined"}
+              onChange={this.handleChange}
+              value={this.state.city}
+            />
+          </Box>
+          <Box m={2}>
+            <TextField
+              name={"stateName"}
+              id={"outlined-basic"}
+              label={"State"}
+              variant={"outlined"}
+              onChange={this.handleChange}
+              value={this.state.stateName}
+            />
+          </Box>
+        </Box>
+        <Button
+          variant="contained"
+          onClick={() => this.loadCivicInfo("voterinfo", this.state.address, this.state.city, this.state.stateName)}
+        >
           Button
-        </button>
+        </Button>
+        <br/>
+        {this.state.locations.length === 0 ? null : this.state.locations.map(location => <LocationCard location={location}/>)}
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -92,8 +131,10 @@ class CivicInfo extends React.Component {
           <DialogTitle id="alert-dialog-title">{"We couldn't find specific polling information for you."}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              For {this.state.stateName} you can access <a href={this.state.voterInfo.ballotInfoUrl}>this site</a> to find your polling location and <a
-              href={this.state.voterInfo.votingLocationFinderUrl}>this site</a> to find information about what will be on your ballot
+              For {this.state.stateName} you can access <a href={this.state.voterInfo.ballotInfoUrl}>this site</a> to
+              find your polling location and <a
+              href={this.state.voterInfo.votingLocationFinderUrl}>this site</a> to find information about what will be
+              on your ballot
             </DialogContentText>
           </DialogContent>
         </Dialog>
