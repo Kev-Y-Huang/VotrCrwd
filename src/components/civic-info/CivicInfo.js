@@ -14,9 +14,7 @@ class CivicInfo extends React.Component {
       address: "",
       city: "",
       stateName: "",
-      normalizedInput: {
-        city: ""
-      },
+      info: null,
       voterInfo: {
         ballotInfoUrl: "",
         votingLocationFinderUrl: ""
@@ -38,6 +36,8 @@ class CivicInfo extends React.Component {
           voterInfo: val.data.state[0].electionAdministrationBody
         });
         this.handleClickOpen();
+      } else {
+        this.setState({info: val.data.earlyVoteSites.map(location => location.address.city)})
       }
       this.setState(val.data);
     } catch (e) {
@@ -76,7 +76,7 @@ class CivicInfo extends React.Component {
         />
         <br/>
 
-        {this.state.normalizedInput.city}
+        Early voting locations: {this.state.info ? this.state.info.map(location => location.concat(" ")) : "null"}
         <br/>
 
         <button
