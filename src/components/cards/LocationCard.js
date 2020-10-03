@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Card, CardActions, CardContent, CardHeader, Collapse, IconButton} from "@material-ui/core";
+import {Card, CardActions, CardContent, CardHeader, Collapse, IconButton, Typography} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 export default function LocationCard(props) {
@@ -16,34 +16,33 @@ export default function LocationCard(props) {
   );
 
   return (
-    <Box m={4}>
-      <Card>
-        <CardHeader
-          title={props.location.type}
-          subheader={props.location.startDate.concat(" to ", props.location.endDate)}
-        />
-        <CardContent>
+    <Card>
+      <CardHeader
+        title={props.location.type}
+        subheader={props.location.startDate.concat(" to ", props.location.endDate)}
+      />
+      <CardContent>
+        <Typography variant="body1" color="textPrimary">
           {props.location.address.line1}
           <br/>
           {props.location.address.city.concat(", ", props.location.address.state, " ", props.location.address.zip)}
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon/>
-          </IconButton>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          Polling Location Times:
-          <br/><br/>
-          {pollingHoursList}
-          <br/>
-        </Collapse>
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        ><ExpandMoreIcon/>
 
-      </Card>
-    </Box>
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        Polling Location Times:
+        <br/><br/>
+        {pollingHoursList}
+        <br/>
+      </Collapse>
+    </Card>
   );
 }
