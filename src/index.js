@@ -7,13 +7,11 @@ import Firebase, { FirebaseContext } from './components/Firebase';
 import { BrowserRouter } from "react-router-dom"
 
 ReactDOM.render(
-  <FirebaseContext.Provider value={new Firebase()}>
-  <React.StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
+    <FirebaseContext.Provider value={new Firebase()}> 
       <App />
-    </BrowserRouter>
-  </React.StrictMode>
-</FirebaseContext.Provider>,
+    </FirebaseContext.Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

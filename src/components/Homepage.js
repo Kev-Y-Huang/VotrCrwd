@@ -4,12 +4,15 @@ import CivicInfo from "./civic-info/CivicInfo";
 import GeoInfo from "./geoinfo/geoinfo";
 import VotrCrwd from "./../assets/VotrCrwd.jpg";
 import {Box} from "@material-ui/core";
+import {FirebaseContext} from "./Firebase"
 
 
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      userId: Math.round(Math.random() * 10000000)
+    };
   }
 
   render() {
@@ -25,7 +28,9 @@ class Homepage extends React.Component {
           <h5>Type in your address to find the nearest polling station near you!</h5>
           <CivicInfo/>
         </Box>
-        <GeoInfo/>
+        <FirebaseContext.Consumer>
+          {firebase => (<GeoInfo userId={this.state.userId} firebase={firebase}/>)}
+        </FirebaseContext.Consumer>
       </div>
     );
   }

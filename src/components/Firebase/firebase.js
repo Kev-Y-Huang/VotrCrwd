@@ -1,4 +1,5 @@
 import app from 'firebase/app';
+import 'firebase/database';
 
 const firebaseConfig = {
     apiKey: "AIzaSyC1livlOhGs2NUUYMMBl3Zv7AzUV2SwXO0",
@@ -14,9 +15,15 @@ const firebaseConfig = {
 class Firebase {
     constructor() {
       app.initializeApp(firebaseConfig);
-      // this.serverValue = app.database.ServerValue;
 
+      this.db = app.database();
     }
+
+    user = uid => this.db.ref(`users/${uid}`);
+    users = () => this.db.ref('users');
+
+    location = uid => this.db.ref(`locations/${uid}`);
+    locations = () => this.db.ref('locations');
   }
    
 export default Firebase;
