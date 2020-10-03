@@ -9,6 +9,12 @@ export default function LocationCard(props) {
     setExpanded(!expanded);
   };
 
+  const pollingHoursString = props.location.pollingHours.replace(/(\r\n|\n|\r)/gm, "newRegexSeparator")
+  const pollingHoursArray = pollingHoursString.split("newRegexSeparator")
+  const pollingHoursList = pollingHoursArray.map((time) =>
+    <li>{time}</li>
+  );
+
   return (
     <Box m={4}>
       <Card>
@@ -31,8 +37,12 @@ export default function LocationCard(props) {
           </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          Polling Locations: {props.location.pollingHours}
+          Polling Locations:
+          <br/><br/>
+            {pollingHoursList}
+          <br/>
         </Collapse>
+        
       </Card>
     </Box>
   );
