@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
-import {Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, Grid} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import LocationCard from "../cards/LocationCard";
 import AddressInput from "../AddressInput/AddressInput";
+import GoogleMaps from "../GoogleMaps/GoogleMaps";
 
 class CivicInfo extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class CivicInfo extends React.Component {
       open: false,
       val: "",
       address: "",
+      addressInfo: "",
       info: null,
       locations: [],
       voterInfo: {
@@ -24,10 +26,16 @@ class CivicInfo extends React.Component {
   loadCivicInfo = async (method, address) => {
     const options = {
       key: process.env.REACT_APP_GOOGLE_API_KEY,
-      address: address,
+      address: address.description,
       electionId: 7000
     };
+    const homeOptions = {
+      placeid: address.place_id,
+      key: process.env.REACT_APP_GOOGLE_API_KEY
+    };
     try {
+      const home = await axios.get("/.netlify/functions/google-api", {params: homeOptions});
+      this.setState({addressInfo: home.data.msg.result});
       const val = await axios.get(`https://www.googleapis.com/civicinfo/v2/${method}`, {params: options});
       this.setState({locations: []});
       if (val.data.earlyVoteSites) {
@@ -84,21 +92,35 @@ class CivicInfo extends React.Component {
 
   render() {
     return (
-      <div>
-        <Box display="flex" flexDirection={"row"} width={"100%"}>
-          <AddressInput name={"address"} onSelectAddress={this.handleAddressChange}/>
-          <Button
-            variant="contained"
-            disabled={this.state.address === ""}
-            onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
-          >
-            <SearchIcon />
-          </Button>
-        </Box>
-        <br/>
-        {this.state.locations.length === 0 || this.state.address === "" ? null : this.state.locations.map(location => {
-          return <LocationCard location={location}/>;
-        })}
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="flex-start"
+        spacing={3}
+      >
+        <Grid item xs={12}>
+          <Grid container justify="center">
+            <Box display="flex" flexDirection={"row"} width={"50%"}>
+              <AddressInput name={"address"} onSelectAddress={this.handleAddressChange}/>
+              <Button
+                variant="contained"
+                disabled={this.state.address === ""}
+                onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
+              >
+                <SearchIcon />
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
+        {this.state.locations.length === 0 ? null : <Grid item xs={6}>
+          {this.state.locations.map((location, index) => {
+            return <LocationCard location={location} key={`location-${index}`}/>;
+          })}
+        </Grid>}
+        {this.state.locations.length === 0 ? null : <Grid item xs={6}>
+          <GoogleMaps home={this.state.addressInfo} locations={this.state.locations}/>
+        </Grid>}
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -115,7 +137,7 @@ class CivicInfo extends React.Component {
             </DialogContentText>
           </DialogContent>
         </Dialog>
-      </div>
+      </Grid>
     );
   }
 }

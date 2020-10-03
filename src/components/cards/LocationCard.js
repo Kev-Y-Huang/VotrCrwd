@@ -9,10 +9,10 @@ export default function LocationCard(props) {
     setExpanded(!expanded);
   };
 
-  const pollingHoursString = props.location.pollingHours.replace(/(\r\n|\n|\r)/gm, "newRegexSeparator")
-  const pollingHoursArray = pollingHoursString.split("newRegexSeparator")
-  const pollingHoursList = pollingHoursArray.map((time) =>
-    <li>{time}</li>
+  const pollingHoursString = props.location.pollingHours.replace(/(\r\n|\n|\r)/gm, "newRegexSeparator");
+  const pollingHoursArray = pollingHoursString.split("newRegexSeparator");
+  const pollingHoursList = pollingHoursArray.map((time, index) =>
+    <li key={index}>{time}</li>
   );
 
   return (
@@ -39,10 +39,10 @@ export default function LocationCard(props) {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           Polling Location Times:
           <br/><br/>
-            {pollingHoursList}
+          {pollingHoursList}
           <br/>
         </Collapse>
-        
+
       </Card>
     </Box>
   );
