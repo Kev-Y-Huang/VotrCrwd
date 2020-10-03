@@ -58,7 +58,16 @@ function App() {
         </Route>
 
         <Route exact path="/find"> Find your polling location here! </Route>
-        <Route exact path="/register"> Haven't registered to vote yet? Register to vote here! </Route>
+        <Route exact path="/register">
+          <h1>Check if you're registered to vote here!</h1>
+          <hr/>
+          <select id = "votereg">
+          <option value="">Select State</option>
+          <option value="https://myinfo.alabamavotes.gov/voterview">Alabama</option>
+          <option value="https://myvoterinformation.alaska.gov/" >Alaska</option>
+          <option value="https://my.arizona.vote/PortalList.aspx">Arizona</option>
+          </select>
+         </Route>
       </Switch>
     </>
   );
