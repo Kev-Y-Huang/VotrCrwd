@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
-import {Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
+import {Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import LocationCard from "../cards/LocationCard";
+import AddressInput from "../AddressInput/AddressInput";
 
 class CivicInfo extends React.Component {
   constructor(props) {
@@ -10,8 +11,6 @@ class CivicInfo extends React.Component {
       open: false,
       val: "",
       address: "",
-      city: "",
-      stateName: "",
       info: null,
       locations: [],
       voterInfo: {
@@ -21,14 +20,15 @@ class CivicInfo extends React.Component {
     };
   }
 
-  loadCivicInfo = async (method, address, city, state) => {
+  loadCivicInfo = async (method, address) => {
     const options = {
-      key: process.env.REACT_APP_GOOGLE_CIVIC_API_KEY,
-      address: address.concat(" ", city, " ", state),
+      key: process.env.REACT_APP_GOOGLE_API_KEY,
+      address: address,
       electionId: 7000
     };
     try {
       const val = await axios.get(`https://www.googleapis.com/civicinfo/v2/${method}`, {params: options});
+      this.setState({locations: []});
       if (val.data.earlyVoteSites) {
         val.data.earlyVoteSites.forEach(location => {
           this.setState(state => {
@@ -73,7 +73,9 @@ class CivicInfo extends React.Component {
     }
   };
 
-  handleChange = (event) => this.setState({[event.target.name]: event.target.value});
+  handleAddressChange = (address) => {
+    this.setState({address: address});
+  };
 
   handleClickOpen = () => this.setState({open: true});
 
@@ -82,46 +84,20 @@ class CivicInfo extends React.Component {
   render() {
     return (
       <div>
-        <Box display="flex" flexDirection={"row"}>
-          <Box m={2}>
-            <TextField
-              name={"address"}
-              id={"outlined-basic"}
-              label={"Address"}
-              variant={"outlined"}
-              onChange={this.handleChange}
-              value={this.state.address}
-            />
-          </Box>
-          <Box m={2}>
-            <TextField
-              name={"city"}
-              id={"outlined-basic"}
-              label={"City"}
-              variant={"outlined"}
-              onChange={this.handleChange}
-              value={this.state.city}
-            />
-          </Box>
-          <Box m={2}>
-            <TextField
-              name={"stateName"}
-              id={"outlined-basic"}
-              label={"State"}
-              variant={"outlined"}
-              onChange={this.handleChange}
-              value={this.state.stateName}
-            />
-          </Box>
+        <Box display="flex" flexDirection={"row"} width={"100%"}>
+          <AddressInput name={"address"} onSelectAddress={this.handleAddressChange}/>
+          <Button
+            variant="contained"
+            disabled={this.state.address === ""}
+            onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
+          >
+            Button
+          </Button>
         </Box>
-        <Button
-          variant="contained"
-          onClick={() => this.loadCivicInfo("voterinfo", this.state.address, this.state.city, this.state.stateName)}
-        >
-          Button
-        </Button>
         <br/>
-        {this.state.locations.length === 0 ? null : this.state.locations.map(location => <LocationCard location={location}/>)}
+        {this.state.locations.length === 0 || this.state.address === "" ? null : this.state.locations.map(location => {
+          return <LocationCard location={location}/>;
+        })}
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
