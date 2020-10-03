@@ -1,10 +1,23 @@
 import React from "react";
 import axios from "axios";
-import {Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, Grid} from "@material-ui/core";
-import SearchIcon from '@material-ui/icons/Search';
-import LocationCard from "../cards/LocationCard";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Typography
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddressInput from "../AddressInput/AddressInput";
 import GoogleMaps from "../GoogleMaps/GoogleMaps";
+import LocationCard from "../cards/LocationCard";
 
 class CivicInfo extends React.Component {
   constructor(props) {
@@ -15,7 +28,9 @@ class CivicInfo extends React.Component {
       address: "",
       addressInfo: "",
       info: null,
-      locations: [],
+      dropOffLocations: [],
+      earlyLocations: [],
+      votingLocations: [],
       voterInfo: {
         ballotInfoUrl: "",
         votingLocationFinderUrl: ""
@@ -37,44 +52,40 @@ class CivicInfo extends React.Component {
       const home = await axios.get("/.netlify/functions/google-api", {params: homeOptions});
       this.setState({addressInfo: home.data.msg.result});
       const val = await axios.get(`https://www.googleapis.com/civicinfo/v2/${method}`, {params: options});
-      this.setState({locations: []});
+      this.setState({
+        earlyLocations: [],
+        dropOffLocations: [],
+        votingLocations: []
+      });
       if (val.data.earlyVoteSites) {
-        val.data.earlyVoteSites.forEach(location => {
-          this.setState(state => {
-            const modifiedLocation = location;
-            modifiedLocation.type = "Early Voting Location";
-            const locations = [...state.locations, modifiedLocation];
-            return {locations};
-          });
-        });
+        val.data.earlyVoteSites.forEach(location => this.setState(state => {
+          const modifiedLocation = location;
+          modifiedLocation.type = "Early Voting Location";
+          const locations = [...state.earlyLocations, modifiedLocation];
+          return {earlyLocations: locations};
+        }));
       }
       if (val.data.dropOffLocations) {
-        val.data.dropOffLocations.forEach(location => {
-          this.setState(state => {
-            const modifiedLocation = location;
-            modifiedLocation.type = "Drop Off Location";
-            const locations = [...state.locations, modifiedLocation];
-            return {locations};
-          });
-        });
+        val.data.dropOffLocations.forEach(location => this.setState(state => {
+          const modifiedLocation = location;
+          modifiedLocation.type = "Drop Off Location";
+          const locations = [...state.dropOffLocations, modifiedLocation];
+          return {dropOffLocations: locations};
+        }));
       }
       if (val.data.pollingLocations) {
-        val.data.pollingLocations.forEach(location => {
-          this.setState(state => {
-            const modifiedLocation = location;
-            modifiedLocation.type = "Polling Location";
-            const locations = [...state.locations, modifiedLocation];
-            return {locations};
-          });
-        });
+        val.data.pollingLocations.forEach(location => this.setState(state => {
+          const modifiedLocation = location;
+          modifiedLocation.type = "Polling Location";
+          const locations = [...state.votingLocations, modifiedLocation];
+          return {votingLocations: locations};
+        }));
       }
       if (!val.data.earlyVoteSites) {
         this.setState({
           voterInfo: val.data.state[0].electionAdministrationBody
         });
         this.handleClickOpen();
-      } else {
-        this.setState({info: val.data.earlyVoteSites.map(location => location.address.city)});
       }
       this.setState(val.data);
     } catch (e) {
@@ -108,18 +119,67 @@ class CivicInfo extends React.Component {
                 disabled={this.state.address === ""}
                 onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
               >
-                <SearchIcon />
+                <SearchIcon/>
               </Button>
             </Box>
           </Grid>
         </Grid>
-        {this.state.locations.length === 0 ? null : <Grid item xs={6}>
-          {this.state.locations.map((location, index) => {
-            return <LocationCard location={location} key={`location-${index}`}/>;
-          })}
-        </Grid>}
-        {this.state.locations.length === 0 ? null : <Grid item xs={6}>
-          <GoogleMaps home={this.state.addressInfo} locations={this.state.locations}/>
+        <Grid item xs={6}>
+          {this.state.earlyLocations.length !== 0 && <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon/>}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>Early Vote Locations</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box width={1}>
+                {this.state.earlyLocations.map((location, index) => {
+                  return <LocationCard location={location} key={`location-${index}`}/>;
+                })}
+              </Box>
+            </AccordionDetails>
+          </Accordion>}
+          {this.state.dropOffLocations.length !== 0 && <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon/>}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>Drop Off Locations</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box width={1}>
+                {this.state.dropOffLocations.map((location, index) => {
+                  return <LocationCard location={location} key={`location-${index}`}/>;
+                })}
+              </Box>
+            </AccordionDetails>
+          </Accordion>}
+          {this.state.votingLocations.length !== 0 && <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon/>}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>Polling Locations</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box width={1}>
+                {this.state.votingLocations.map((location, index) => {
+                  return <LocationCard location={location} key={`location-${index}`}/>;
+                })}
+              </Box>
+            </AccordionDetails>
+          </Accordion>}
+        </Grid>
+        {this.state.earlyLocations.length !== 0 && <Grid item xs={6}>
+          <GoogleMaps home={this.state.addressInfo} locations={[
+            ...this.state.earlyLocations,
+            ...this.state.dropOffLocations,
+            ...this.state.votingLocations
+          ]}/>
         </Grid>}
         <Dialog
           open={this.state.open}
