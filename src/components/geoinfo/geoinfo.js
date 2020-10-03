@@ -23,9 +23,7 @@ class GeoInfo extends React.Component {
 
   loadGeoInfo = (position) => {
     this.setState({latitude: position.coords.latitude});
-    console.log("Latitude: ", this.state.latitude);
     this.setState({longitude: position.coords.longitude});
-    console.log("Longitude: ", this.state.longitude);
     return null;
   }
 
@@ -46,9 +44,18 @@ class GeoInfo extends React.Component {
         this.setState({latitude: position.coords.latitude});
         this.setState({longitude: position.coords.longitude});
 
+        var ref = this.props.firebase.locations();
+        var now = Date.now();
+        var cutoff = now - 60 * 60 * 1000;
+        var old = ref.orderByChild('timestamp').endAt(cutoff).limitToLast(1);
+        var listener = old.on('child_added', function(snapshot) {
+            snapshot.ref.remove();
+        });
+
         this.props.firebase.locations().child(this.props.userId).set({
           longitude: this.state.longitude,
           latitude: this.state.latitude,
+          timestamp: Date.now(),
         });
         return null;
       },
