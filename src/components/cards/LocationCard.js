@@ -37,7 +37,7 @@ export default function LocationCard(props) {
           </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          Polling Locations:
+          Polling Location Times:
           <br/><br/>
           {pollingHoursList}
           <br/>

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import {Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, Grid} from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
 import LocationCard from "../cards/LocationCard";
 import AddressInput from "../AddressInput/AddressInput";
 import GoogleMaps from "../GoogleMaps/GoogleMaps";
@@ -107,7 +108,7 @@ class CivicInfo extends React.Component {
                 disabled={this.state.address === ""}
                 onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
               >
-                Submit
+                <SearchIcon />
               </Button>
             </Box>
           </Grid>

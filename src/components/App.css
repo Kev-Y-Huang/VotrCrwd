@@ -21,7 +21,8 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 .App-link {
@@ -36,3 +37,5 @@
     transform: rotate(360deg);
   }
 }
+
+
