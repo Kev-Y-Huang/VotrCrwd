@@ -172,17 +172,6 @@ export class GoogleMaps extends Component {
         lng: this.props.home.geometry.location.lng
       }}
     />);
-    markerArr.push(<InfoWindow
-      key={"info-window"}
-      google={this.props.google}
-      marker={this.state.activeMarker}
-      visible={this.state.showingInfoWindow}
-      onClose={this.onClose}
-    >
-      <div>
-        <h4>{this.state.selectedPlace.name}</h4>
-      </div>
-    </InfoWindow>);
     this.setState({markers: markerArr});
   };
 
@@ -202,8 +191,20 @@ export class GoogleMaps extends Component {
           }}
           initialCenter={this.state.initStyle.center}
           onClick={this.onMapClicked}
+          onReady={(mapProps, map) => this._mapLoaded(mapProps, map)}
         >
           {this.state.markers}
+          <InfoWindow
+            key={"info-window"}
+            google={this.props.google}
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}
+            onClose={this.onClose}
+          >
+            <div>
+              <p style={{color: "black"}}>{this.state.selectedPlace.name}</p>
+            </div>
+          </InfoWindow>
         </Map>
       </Box>
     );
