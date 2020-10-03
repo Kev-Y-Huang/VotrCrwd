@@ -1,4 +1,5 @@
 import React from "react";
+import { withFirebase } from '../Firebase';
 
 class GeoInfo extends React.Component {
   constructor(props) {
@@ -6,7 +7,9 @@ class GeoInfo extends React.Component {
     this.state = {
       longitude: "",
       latitude: "",
-      postalCode: ""
+      postalCode: "",
+      loading: false,
+      locations: [],
     };
   }
 
@@ -41,9 +44,12 @@ class GeoInfo extends React.Component {
       console.log("Location Available");
       navigator.geolocation.getCurrentPosition((position) => {
         this.setState({latitude: position.coords.latitude});
-        console.log("Latitude: ", this.state.latitude);
         this.setState({longitude: position.coords.longitude});
-        console.log("Longitude: ", this.state.longitude);
+
+        this.props.firebase.locations().child(this.props.userId).set({
+          longitude: this.state.longitude,
+          latitude: this.state.latitude,
+        });
         return null;
       },
         this.showError);
@@ -54,10 +60,28 @@ class GeoInfo extends React.Component {
 
   componentDidMount() {
     this.getGeoLocation();
-    this.interval = setInterval(this.getGeoLocation.bind(this), 60000)
+    this.interval = setInterval(this.getGeoLocation.bind(this), 10000)
+    
+    this.props.firebase.locations().on('value', snapshot => { 
+      const locationObject = snapshot.val();
+ 
+      if (locationObject) {
+        const locationList = Object.keys(locationObject).map(key => ({
+          ...locationObject[key],
+          uid: key,
+        }));
+
+        this.setState({ 
+          locations: locationList,
+          loading: false 
+        });
+      } else {
+        this.setState({ messages: null, loading: false });
+      }    });
   }
 
   componentWillUnmount() {
+    this.props.firebase.locations().off();
     clearInterval(this.interval);
 }
 
