@@ -111,18 +111,16 @@ class CivicInfo extends React.Component {
         spacing={3}
       >
         <Grid item xs={12}>
-          <Grid container justify="center">
-            <Box display="flex" flexDirection={"row"} width={"50%"}>
-              <AddressInput name={"address"} onSelectAddress={this.handleAddressChange}/>
-              <Button
-                variant="contained"
-                disabled={this.state.address === ""}
-                onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
-              >
-                <SearchIcon/>
-              </Button>
-            </Box>
-          </Grid>
+          <Box display="flex" flexDirection={"row"} width={"50%"} justifyContent={"center"} m={"auto"}>
+            <AddressInput name={"address"} onSelectAddress={this.handleAddressChange}/>
+            <Button
+              variant="contained"
+              disabled={this.state.address === ""}
+              onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
+            >
+              <SearchIcon/>
+            </Button>
+          </Box>
         </Grid>
         <Grid item xs={6}>
           {this.state.earlyLocations.length !== 0 && <Accordion>

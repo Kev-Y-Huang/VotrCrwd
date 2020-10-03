@@ -95,7 +95,7 @@ export default function AddressInput(props) {
   return (
     <Autocomplete
       id="google-map-demo"
-      style={{width: "80%", paddingLeft: "5%"}}
+      style={{width: "80%"}}
       getOptionLabel={(option) => (typeof option === "string" ? option : option.description)}
       filterOptions={(x) => x}
       options={options}
@@ -112,7 +112,7 @@ export default function AddressInput(props) {
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Add a location e.g. Street, City, State, USA" variant="outlined" fullWidth/>
+        <TextField {...params} label="Input Address (Street, City, State)" variant="outlined" fullWidth/>
       )}
       renderOption={(option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;
