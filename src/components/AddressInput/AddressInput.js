@@ -106,7 +106,7 @@ export default function AddressInput(props) {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
-        props.onSelectAddress(newValue ? newValue.description : "");
+        props.onSelectAddress(newValue ? newValue : "");
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);

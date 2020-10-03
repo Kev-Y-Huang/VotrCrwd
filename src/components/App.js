@@ -5,7 +5,7 @@ import GeoInfo from "./geoinfo/geoinfo";
 import VotrCrwd from "./../assets/VotrCrwd.jpg";
 import onlyFans from "./../assets/buyCoffee.jpeg";
 import {Box} from "@material-ui/core";
-import {Switch, Route, Link} from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 
 function App() {
   return (
@@ -13,17 +13,19 @@ function App() {
       <Route exact path="/">
         <div className="App">
           <header className="App-header">
-            <Box width={700}>
+            <Box width={"75%"}
+                 justify="center"
+                 alignItems="center">
               <img src={VotrCrwd} alt={"logo"}/>
               <CivicInfo/>
             </Box>
             <GeoInfo/>
           </header>
 
-          <Link to={{ pathname: "https://onlyfans.com"}} target="_blank">
+          <Link to={{pathname: "https://onlyfans.com"}} target="_blank">
             <img src={onlyFans} alt={"Buy Me A Coffee"}/>
           </Link>
-          
+
           {/* <!-- The core Firebase JS SDK is always required and must be listed first --> */}
           <script src="/__/firebase/7.22.0/firebase-app.js"/>
           {/* <!-- TODO: Add SDKs for Firebase products that you want to use
