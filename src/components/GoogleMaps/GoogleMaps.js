@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {GoogleApiWrapper, InfoWindow, Map, Marker} from "google-maps-react";
 import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper";
 
 const mapStyles = [
   {
@@ -177,36 +178,35 @@ export class GoogleMaps extends Component {
 
   render() {
     return (
-      <Box
-        width={1}
-        height={400}
-      >
-        <Map
-          google={this.props.google}
-          zoom={this.state.markers.length === 0 ? this.state.initStyle.zoom : 8}
-          containerStyle={{position: "relative"}}
-          center={this.state.markers.length === 0 ? this.state.initStyle.center : {
-            lat: this.props.home.geometry.location.lat,
-            lng: this.props.home.geometry.location.lng
-          }}
-          initialCenter={this.state.initStyle.center}
-          onClick={this.onMapClicked}
-          onReady={(mapProps, map) => this._mapLoaded(mapProps, map)}
-        >
-          {this.state.markers}
-          <InfoWindow
-            key={"info-window"}
+      <Paper variant="outlined" height={400}>
+        <Box height={400}>
+          <Map
             google={this.props.google}
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            onClose={this.onClose}
+            zoom={this.state.markers.length === 0 ? this.state.initStyle.zoom : 8}
+            containerStyle={{position: "relative"}}
+            center={this.state.markers.length === 0 ? this.state.initStyle.center : {
+              lat: this.props.home.geometry.location.lat,
+              lng: this.props.home.geometry.location.lng
+            }}
+            initialCenter={this.state.initStyle.center}
+            onClick={this.onMapClicked}
+            onReady={(mapProps, map) => this._mapLoaded(mapProps, map)}
           >
-            <div>
-              <p style={{color: "black"}}>{this.state.selectedPlace.name}</p>
-            </div>
-          </InfoWindow>
-        </Map>
-      </Box>
+            {this.state.markers}
+            <InfoWindow
+              key={"info-window"}
+              google={this.props.google}
+              marker={this.state.activeMarker}
+              visible={this.state.showingInfoWindow}
+              onClose={this.onClose}
+            >
+              <div>
+                <p style={{color: "black"}}>{this.state.selectedPlace.name}</p>
+              </div>
+            </InfoWindow>
+          </Map>
+        </Box>
+      </Paper>
     );
   }
 }

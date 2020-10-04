@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
 import CivicInfo from "./civic-info/CivicInfo";
-import VotrCrwd from "./../assets/VotrCrwd.jpg";
+import VotrCrwd from "./../assets/VotrCrwd.svg";
+import Typography from "@material-ui/core/Typography";
 
 
 class Homepage extends React.Component {
@@ -15,7 +16,9 @@ class Homepage extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h1 style={{fontSize: 80}}>Welcome to</h1>
+        <Typography variant="h2">
+          Welcome to
+        </Typography>
         <img src={VotrCrwd} alt={"logo"}/>
         <h4>The All-American way to Vote.</h4>
         <h5>Type in your address to find the nearest polling station near you!</h5>

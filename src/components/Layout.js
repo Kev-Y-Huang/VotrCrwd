@@ -20,7 +20,7 @@ const Layout = ({children, pageName}) => {
       <div>
         <Header/>
         <Box
-          width={"60%"}
+          width={{xs: "90%", md: "60%"}}
           justifyContent="center"
           alignItems="center"
           className={"App"}
