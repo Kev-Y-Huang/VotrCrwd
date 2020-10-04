@@ -6,8 +6,8 @@ export default function Header() {
     <AppBar color="white" position="static">
       <Toolbar>
         <Button color="secondary" href="/">Locations</Button>
+        <Button color="secondary" href="/register">Voter Info</Button>
         <Button color="secondary" href="/about">About</Button>
-        <Button color="secondary" href="/register">Voter Information</Button>
       </Toolbar>
     </AppBar>
   );
