@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import {Button, Grid, Input} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import VotrCrwd from "../assets/VotrCrwd.svg";
 
 class Register extends React.Component {
   constructor(props) {
@@ -39,8 +40,9 @@ class Register extends React.Component {
         <Typography variant="h2">
           Voter Information
         </Typography>
-        <h4>Need to register to vote?</h4>
-        <h4>Wanna request an absentee ballot form?</h4>
+        <img src={VotrCrwd} alt={"logo"} width={"75%"}/>
+        <h3>Need to register to vote?</h3>
+        <h3>Wanna request an absentee ballot form?</h3>
         <Grid
           container
           direction="row"

@@ -26,7 +26,7 @@ export default function LocationCard(props) {
   const personCounter = (lat, lon) => {
     let counter = 0;
     for (const key in props.firebase.locations()) {
-      if (haversine(key.latitude, key.longitude, lat, lon) < 2) {
+      if (haversine(key.latitude, key.longitude, lat, lon) < 20000) {
         counter++;
       }
     }
@@ -52,8 +52,8 @@ export default function LocationCard(props) {
             onClick={handleExpandClick}
             aria-expanded={expanded}
             aria-label="show more"
-          ><ExpandMoreIcon/>
-
+          >
+            <ExpandMoreIcon/>
           </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>

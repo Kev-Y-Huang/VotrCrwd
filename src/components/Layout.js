@@ -17,17 +17,20 @@ const Layout = ({children, pageName}) => {
       <Helmet bodyAttributes={{class: className}}>
         <title>VotrCrwd</title>
       </Helmet>
-      <div>
+      <Box
+        justifyContent="center"
+        alignItems="center">
         <Header/>
         <Box
-          width={{xs: "90%", md: "60%"}}
+          width={{xs: "80%", md: "60%"}}
           justifyContent="center"
           alignItems="center"
           className={"App"}
+          p={3}
         >
           {children}
         </Box>
-      </div>
+      </Box>
     </>
   );
 };

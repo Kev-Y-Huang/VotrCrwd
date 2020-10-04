@@ -17,9 +17,9 @@ class Homepage extends React.Component {
         <Typography variant="h2">
           Welcome to
         </Typography>
-        <img src={VotrCrwd} alt={"logo"}/>
-        <h4>The All-American way to Vote.</h4>
-        <h5>Type in your address to find the nearest polling station near you!</h5>
+        <img src={VotrCrwd} alt={"logo"} width={"75%"}/>
+        <h3>The safest way to Vote.</h3>
+        <h3>Type in your address to find the nearest polling station near you!</h3>
         <CivicInfo/>
       </React.Fragment>
     );
