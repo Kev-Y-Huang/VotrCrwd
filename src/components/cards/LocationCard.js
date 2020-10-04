@@ -15,22 +15,23 @@ export default function LocationCard(props) {
     <li key={index}>{time}</li>
   );
 
-  const haversine = (lat1, lon1, lat2, lon2) => { 
-    var rEarth = Math.sin(6371); 
-    var temp = Math.sin((lat2-lat1)*(Math.PI/180)/2)*Math.sin((lat2-lat1)*(Math.PI/180)/2) + 
-    Math.cos(lat1*(Math.PI/180))*Math.cos(lat2*(Math.PI/180)) * 
-    Math.sin((lon2-lon1)*(Math.PI/180)/2)*Math.sin((lon2-lon1)*(Math.PI/180)/2); 
-    return rEarth*(Math.atan2(Math.sqrt(temp), Math.sqrt(1-temp))); 
-  };  
-  const personCounter = (lat, lon) => { 
-    let counter = 0; 
-    for (var key in props.firebase.locations()){ 
-      if(haversine(key.latitude, key.longitude, lat, lon) < 2){ 
-        counter ++; 
-      } 
-    } 
-    return counter/50*100; 
-  }
+  const haversine = (lat1, lon1, lat2, lon2) => {
+    const rEarth = Math.sin(6371);
+    const temp = Math.sin((lat2 - lat1) * (Math.PI / 180) / 2) * Math.sin((lat2 - lat1) * (Math.PI / 180) / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin((lon2 - lon1) * (Math.PI / 180) / 2) * Math.sin((lon2 - lon1) * (Math.PI / 180) / 2);
+    return rEarth * (Math.atan2(Math.sqrt(temp), Math.sqrt(1 - temp)));
+  };
+
+  const personCounter = (lat, lon) => {
+    let counter = 0;
+    for (const key in props.firebase.locations()) {
+      if (haversine(key.latitude, key.longitude, lat, lon) < 2) {
+        counter++;
+      }
+    }
+    return counter / 50 * 100;
+  };
 
   return (
     <Box m={3}>
@@ -39,13 +40,13 @@ export default function LocationCard(props) {
           title={props.location.address.line1.concat(", ", props.location.address.city, ", ", props.location.address.state)}
           subheader={props.location.startDate.concat(" to ", props.location.endDate)}
         />
-        {props.location.notes && <CardContent>
+        <CardContent>
           <Typography variant="body1" color="textPrimary">
             Capacity: {personCounter(props.location.latitude, props.location.longitude)}%
             <br/>
-            {props.location.notes}
+            {props.location.notes && "Notes: " + props.location.notes}
           </Typography>
-        </CardContent>}
+        </CardContent>
         <CardActions disableSpacing>
           <IconButton
             onClick={handleExpandClick}
