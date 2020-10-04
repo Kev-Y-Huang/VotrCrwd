@@ -3,11 +3,13 @@ import "./App.css";
 import Homepage from "./Homepage";
 import About from "./About";
 import Register from "./Register"
-import {AppBar, Toolbar, Button, Menu, MenuItem}from "@material-ui/core";
-import {Switch, Route, Link} from "react-router-dom";
-import americanFlag from "./../assets/americanFlag.jpg"
+import {Route, Switch} from "react-router-dom";
+import Layout from "./Layout";
+import GeoInfo from "./geoinfo/geoinfo";
+import {FirebaseContext} from "./Firebase";
 
 function App() {
+  const [userId] = React.useState(Math.round(Math.random() * 10000000));
   return (
     <>
       {/* <!-- The core Firebase JS SDK is always required and must be listed first --> */}
@@ -20,48 +22,30 @@ function App() {
 
       <Switch>
         <Route exact path="/">
-          <div className="App">
-            <AppBar color="default" position="static">
-              <Toolbar>
-                <Button color="secondary" href="/">Locations</Button>
-                <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/register">Voter Information</Button>
-              </Toolbar>
-            </AppBar>
-            <header className="App-header">
-              <Homepage/>
-            </header>
-          </div>
+          <Layout pagename={"Homepage"}>
+            <Homepage/>
+            <FirebaseContext.Consumer>
+              {firebase => (<GeoInfo userId={userId} firebase={firebase}/>)}
+            </FirebaseContext.Consumer>
+          </Layout>
         </Route>
 
         <Route exact path="/about">
-          <div className="App">
-            <AppBar color="default" position="static">
-              <Toolbar>
-                <Button color="secondary" href="/">Locations</Button>
-                <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/register">Voter Information</Button>
-              </Toolbar>
-            </AppBar>
-            <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">
-              <About/>
-            </header>
-          </div>
+          <Layout pagename={"About"}>
+            <About/>
+            <FirebaseContext.Consumer>
+              {firebase => (<GeoInfo userId={userId} firebase={firebase}/>)}
+            </FirebaseContext.Consumer>
+          </Layout>
         </Route>
 
         <Route exact path="/register">
-          <div className="App">
-            <AppBar color="default" position="static">
-              <Toolbar>
-                <Button color="secondary" href="/">Locations</Button>
-                <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/register">Voter Information</Button>
-              </Toolbar>
-            </AppBar>
-            <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">
-              <Register/>
-            </header>
-          </div>
+          <Layout pagename={"Register"}>
+            <Register/>
+            <FirebaseContext.Consumer>
+              {firebase => (<GeoInfo userId={userId} firebase={firebase}/>)}
+            </FirebaseContext.Consumer>
+          </Layout>
         </Route>
       </Switch>
     </>

@@ -112,20 +112,18 @@ class CivicInfo extends React.Component {
         spacing={3}
       >
         <Grid item xs={12}>
-          <Grid container justify="center">
-            <Box display="flex" flexDirection={"row"} width={"50%"}>
-              <AddressInput name={"address"} onSelectAddress={this.handleAddressChange}/>
-              <Button
-                variant="contained"
-                disabled={this.state.address === ""}
-                onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
-              >
-                <SearchIcon/>
-              </Button>
-            </Box>
-          </Grid>
+          <Box display="flex" flexDirection={"row"} width={{xs: 1, md: "60%"}} justifyContent={"center"} m={"auto"}>
+            <AddressInput name={"address"} onSelectAddress={this.handleAddressChange}/>
+            <Button
+              variant="contained"
+              disabled={this.state.address === ""}
+              onClick={() => this.loadCivicInfo("voterinfo", this.state.address)}
+            >
+              <SearchIcon/>
+            </Button>
+          </Box>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item md={6} xs={12}>
           {this.state.earlyLocations.length !== 0 && <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon/>}
@@ -187,7 +185,7 @@ class CivicInfo extends React.Component {
             </FirebaseContext.Consumer>
           </Accordion>}
         </Grid>
-        {this.state.earlyLocations.length !== 0 && <Grid item xs={6}>
+        {this.state.earlyLocations.length !== 0 && <Grid item md={6} xs={12}>
           <GoogleMaps home={this.state.addressInfo} locations={[
             ...this.state.earlyLocations,
             ...this.state.dropOffLocations,
