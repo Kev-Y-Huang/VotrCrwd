@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Homepage from "./Homepage";
 import About from "./About";
-import onlyFans from "./../assets/buyCoffee.jpeg";
+import Register from "./Register"
 import {AppBar, Toolbar, Button, Menu, MenuItem}from "@material-ui/core";
 import {Switch, Route, Link} from "react-router-dom";
 import americanFlag from "./../assets/americanFlag.jpg"
@@ -21,18 +21,14 @@ function App() {
       <Switch>
         <Route exact path="/">
           <div className="App">
-            <AppBar color="white" position="static">
+            <AppBar color="default" position="static">
               <Toolbar>
-                <Button color="secondary" href="/">Home</Button>
+                <Button color="secondary" href="/">Locations</Button>
                 <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/find">Find</Button>
-                <Button color="secondary" href="/register">Register</Button>
-                  <Link to={{ pathname: "https://onlyfans.com"}} target="_blank">
-                    <img src={onlyFans} width="100" alt={"Buy Me A Coffee"}/>
-                  </Link>
+                <Button color="secondary" href="/register">Voter Information</Button>
               </Toolbar>
             </AppBar>
-            <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">
+            <header className="App-header">
               <Homepage/>
             </header>
           </div>
@@ -40,15 +36,11 @@ function App() {
 
         <Route exact path="/about">
           <div className="App">
-            <AppBar color="white" position="static">
+            <AppBar color="default" position="static">
               <Toolbar>
-                <Button color="secondary" href="/">Home</Button>
+                <Button color="secondary" href="/">Locations</Button>
                 <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/find">Find</Button>
-                <Button color="secondary" href="/register">Register</Button>
-                  <Link to={{ pathname: "https://onlyfans.com"}} target="_blank">
-                    <img src={onlyFans} width="100" alt={"Buy Me A Coffee"}/>
-                  </Link>
+                <Button color="secondary" href="/register">Voter Information</Button>
               </Toolbar>
             </AppBar>
             <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">
@@ -57,17 +49,20 @@ function App() {
           </div>
         </Route>
 
-        <Route exact path="/find"> Find your polling location here! </Route>
         <Route exact path="/register">
-          <h1>Check if you're registered to vote here!</h1>
-          <hr/>
-          <select id = "votereg">
-          <option value="">Select State</option>
-          <option value="https://myinfo.alabamavotes.gov/voterview">Alabama</option>
-          <option value="https://myvoterinformation.alaska.gov/" >Alaska</option>
-          <option value="https://my.arizona.vote/PortalList.aspx">Arizona</option>
-          </select>
-         </Route>
+          <div className="App">
+            <AppBar color="default" position="static">
+              <Toolbar>
+                <Button color="secondary" href="/">Locations</Button>
+                <Button color="secondary" href="/about">About</Button>
+                <Button color="secondary" href="/register">Voter Information</Button>
+              </Toolbar>
+            </AppBar>
+            <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">
+              <Register/>
+            </header>
+          </div>
+        </Route>
       </Switch>
     </>
   );
