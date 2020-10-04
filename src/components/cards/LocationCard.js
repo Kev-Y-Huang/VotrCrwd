@@ -15,6 +15,23 @@ export default function LocationCard(props) {
     <li key={index}>{time}</li>
   );
 
+  const haversine = (lat1, lon1, lat2, lon2) => { 
+    var rEarth = Math.sin(6371); 
+    var temp = Math.sin((lat2-lat1)*(Math.PI/180)/2)*Math.sin((lat2-lat1)*(Math.PI/180)/2) + 
+    Math.cos(lat1*(Math.PI/180))*Math.cos(lat2*(Math.PI/180)) * 
+    Math.sin((lon2-lon1)*(Math.PI/180)/2)*Math.sin((lon2-lon1)*(Math.PI/180)/2); 
+    return rEarth*(Math.atan2(Math.sqrt(temp), Math.sqrt(1-temp))); 
+  };  
+  const personCounter = (lat, lon) => { 
+    let counter = 0; 
+    for (var key in props.firebase.locations()){ 
+      if(haversine(key.latitude, key.longitude, lat, lon) < 2){ 
+        counter ++; 
+      } 
+    } 
+    return counter/50*100; 
+  }
+
   return (
     <Box m={3}>
       <Card>
@@ -24,6 +41,8 @@ export default function LocationCard(props) {
         />
         {props.location.notes && <CardContent>
           <Typography variant="body1" color="textPrimary">
+            Capacity: {personCounter(props.location.latitude, props.location.longitude)}%
+            <br/>
             {props.location.notes}
           </Typography>
         </CardContent>}
