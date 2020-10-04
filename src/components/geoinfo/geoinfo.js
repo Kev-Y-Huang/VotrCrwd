@@ -29,7 +29,7 @@ class GeoInfo extends React.Component {
   showError(error) {
     if (error.code === error.PERMISSION_DENIED) {
       console.log("User denied the request for Geolocation.");
-      alert("ayo fam give us permission to stalk you smh");
+      alert("VotrCrwd needs your location to function properly");
     } else {
       console.log("lol loser");
       alert("lol loser");
