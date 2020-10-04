@@ -18,7 +18,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddressInput from "../AddressInput/AddressInput";
 import GoogleMaps from "../GoogleMaps/GoogleMaps";
 import LocationCard from "../cards/LocationCard";
-import {FirebaseContext} from "../Firebase"
+import {FirebaseContext} from "../Firebase";
 
 class CivicInfo extends React.Component {
   constructor(props) {
@@ -56,7 +56,8 @@ class CivicInfo extends React.Component {
       this.setState({
         earlyLocations: [],
         dropOffLocations: [],
-        votingLocations: []
+        votingLocations: [],
+        stateName: val.data.normalizedInput.state
       });
       if (val.data.earlyVoteSites) {
         val.data.earlyVoteSites.forEach(location => this.setState(state => {
@@ -88,7 +89,6 @@ class CivicInfo extends React.Component {
         });
         this.handleClickOpen();
       }
-      this.setState(val.data);
     } catch (e) {
       console.log("Error: ", e);
     }
