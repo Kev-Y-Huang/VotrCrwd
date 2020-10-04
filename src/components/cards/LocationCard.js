@@ -16,20 +16,33 @@ export default function LocationCard(props) {
   );
 
   const haversine = (lat1, lon1, lat2, lon2) => {
-    const rEarth = Math.sin(6371);
-    const temp = Math.sin((lat2 - lat1) * (Math.PI / 180) / 2) * Math.sin((lat2 - lat1) * (Math.PI / 180) / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin((lon2 - lon1) * (Math.PI / 180) / 2) * Math.sin((lon2 - lon1) * (Math.PI / 180) / 2);
-    return rEarth * (Math.atan2(Math.sqrt(temp), Math.sqrt(1 - temp)));
-  };
+    var R = 6371;
+    var dLat = getRadians(lat2-lat1);
+    var dLon = getRadians(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(getRadians(lat1)) * Math.cos(getRadians(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var dist = R * c;
+    return dist;
+  }
+
+  function getRadians(deg) {
+    return deg * (Math.PI/180)
+  }
 
   const personCounter = (lat, lon) => {
     let counter = 0;
-    for (const key in props.firebase.locations()) {
-      if (haversine(key.latitude, key.longitude, lat, lon) < 20000) {
-        counter++;
-      }
-    }
+    props.firebase.locations().once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var childData = childSnapshot.val();
+        console.log(haversine(childData.latitude, childData.longitude, lat, lon))
+        if (haversine(childData.latitude, childData.longitude, lat, lon) < 2) {
+          counter++;
+        }
+      });
+    });
     return counter / 50 * 100;
   };
 
