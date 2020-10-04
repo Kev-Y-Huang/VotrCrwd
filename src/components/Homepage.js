@@ -1,9 +1,7 @@
 import React from "react";
-import "./App.css";
 import CivicInfo from "./civic-info/CivicInfo";
 import VotrCrwd from "./../assets/VotrCrwd.svg";
 import Typography from "@material-ui/core/Typography";
-
 
 class Homepage extends React.Component {
   constructor(props) {

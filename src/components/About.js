@@ -1,7 +1,13 @@
 import React from "react";
 import "./App.css";
+import "./About.css";
 import VotrCrwd from "./../assets/VotrCrwd.svg";
 import Typography from "@material-ui/core/Typography";
+import {Box} from "@material-ui/core";
+import Alex from "./../assets/AlexCheng.jpg";
+import Ethan from "./../assets/EthanLee.png";
+import Kevin from "./../assets/KevinHuang.jpg";
+import Lucas from "./../assets/LucasPao.JPG";
 
 
 class About extends React.Component {

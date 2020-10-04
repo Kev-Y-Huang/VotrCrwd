@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Homepage from "./Homepage";
 import About from "./About";
+import Register from "./Register"
 import {Route, Switch} from "react-router-dom";
 import Layout from "./Layout";
 import GeoInfo from "./geoinfo/geoinfo";
@@ -38,16 +39,13 @@ function App() {
           </Layout>
         </Route>
 
-        <Route exact path="/find"> Find your polling location here! </Route>
         <Route exact path="/register">
-          <h1>Check if you're registered to vote here!</h1>
-          <hr/>
-          <select id="votereg">
-            <option value="">Select State</option>
-            <option value="https://myinfo.alabamavotes.gov/voterview">Alabama</option>
-            <option value="https://myvoterinformation.alaska.gov/">Alaska</option>
-            <option value="https://my.arizona.vote/PortalList.aspx">Arizona</option>
-          </select>
+          <Layout pagename={"Register"}>
+            <Register/>
+            <FirebaseContext.Consumer>
+              {firebase => (<GeoInfo userId={userId} firebase={firebase}/>)}
+            </FirebaseContext.Consumer>
+          </Layout>
         </Route>
       </Switch>
     </>
