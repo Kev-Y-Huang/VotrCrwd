@@ -1,20 +1,31 @@
 import React from "react";
 import "./App.css";
-import CivicInfo from "./civic-info/CivicInfo";
-import GeoInfo from "./geoinfo/geoinfo";
-import VotrCrwd from "./../assets/VotrCrwd.jpg";
 import {Box, Input, Button} from "@material-ui/core";
-import {FirebaseContext} from "./Firebase"
-import {Link} from "react-router-dom";
 
 class Register extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {USstate: "", disable: true};
+    this.state = {
+      USstate: "",
+      disable: true,
+      states: [
+        'Alabama','Alaska','Arizona','Arkansas','California',
+        'Colorado','Connecticut','Delaware','Florida','Georgia',
+        'Hawaii','Idaho','Illinois','Indiana','Iowa',
+        'Kansas','Kentucky','Louisiana','Maine','Maryland',
+        'Massachusetts','Michigan','Minnesota','Mississippi','Missouri',
+        'Montana','Nebraska','Nevada','New Hampshire','New Jersey',
+        'New Mexico','New York','North Carolina','North Dakota','Ohio',
+        'Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina',
+        'South Dakota','Tennessee','Texas','Utah','Vermont',
+        'Virginia','Washington','West Virginia','Wisconsin','Wyoming'
+      ]
+    };
   }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+    this.setState({ disable: !this.state.states.includes(event.target.value)});
   };
 
   render() {
@@ -28,7 +39,7 @@ class Register extends React.Component {
             justify="center"
             alignItems="center"
         >
-        <h1 style={{fontSize: 80}}>Voter Registration</h1>
+        <h1 style={{fontSize: 80}}>Voter Information</h1>
         <h4>Need to register to vote?</h4>
         <h4>Wanna request an absentee ballot form?</h4>
         <form noValidate autoComplete="off">
@@ -42,9 +53,9 @@ class Register extends React.Component {
           />
         </form>
         <br/>
-        <Button href="https://www.usa.gov/register-to-vote" color="secondary">Register to Vote</Button> {" "}
-        <Button href={absenteeUrl} color="secondary">Request Absentee Ballot</Button>
-        <Button href={infoUrl} color="secondary">General Information</Button>
+        <Button disabled={this.state.disable} href="https://www.usa.gov/register-to-vote" color="secondary">Register to Vote</Button> {" "}
+        <Button disabled={this.state.disable} href={absenteeUrl} color="secondary">Request Absentee Ballot</Button>
+        <Button disabled={this.state.disable} href={infoUrl} color="secondary">General Information</Button>
         <hr/>
         </Box>
       </div>

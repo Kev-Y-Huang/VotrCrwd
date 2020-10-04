@@ -21,14 +21,14 @@ function App() {
       <Switch>
         <Route exact path="/">
           <div className="App">
-            <AppBar color="white" position="static">
+            <AppBar color="default" position="static">
               <Toolbar>
                 <Button color="secondary" href="/">Locations</Button>
                 <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/register">Voter Registration</Button>
+                <Button color="secondary" href="/register">Voter Information</Button>
               </Toolbar>
             </AppBar>
-            <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">
+            <header className="App-header">
               <Homepage/>
             </header>
           </div>
@@ -36,11 +36,11 @@ function App() {
 
         <Route exact path="/about">
           <div className="App">
-            <AppBar color="white" position="static">
+            <AppBar color="default" position="static">
               <Toolbar>
                 <Button color="secondary" href="/">Locations</Button>
                 <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/register">Voter Registration</Button>
+                <Button color="secondary" href="/register">Voter Information</Button>
               </Toolbar>
             </AppBar>
             <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">
@@ -51,11 +51,11 @@ function App() {
 
         <Route exact path="/register">
           <div className="App">
-            <AppBar color="white" position="static">
+            <AppBar color="default" position="static">
               <Toolbar>
                 <Button color="secondary" href="/">Locations</Button>
                 <Button color="secondary" href="/about">About</Button>
-                <Button color="secondary" href="/register">Voter Registration</Button>
+                <Button color="secondary" href="/register">Voter Information</Button>
               </Toolbar>
             </AppBar>
             <header style={{ backgroundImage: `url(${americanFlag})` }} className="App-header">

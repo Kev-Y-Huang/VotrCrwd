@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import CivicInfo from "./civic-info/CivicInfo";
 import GeoInfo from "./geoinfo/geoinfo";
 import VotrCrwd from "./../assets/VotrCrwd.jpg";
