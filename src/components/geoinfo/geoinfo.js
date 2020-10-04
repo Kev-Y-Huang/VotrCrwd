@@ -12,18 +12,6 @@ class GeoInfo extends React.Component {
     };
   }
 
-  haversine(lat1, lon1, lat2, lon2) {
-    const rEarth = Math.sin(6371);
-    const temp =
-      Math.sin(((lat2 - lat1) * (Math.PI / 180)) / 2) *
-        Math.sin(((lat2 - lat1) * (Math.PI / 180)) / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) *
-        Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(((lon2 - lon1) * (Math.PI / 180)) / 2) *
-        Math.sin(((lon2 - lon1) * (Math.PI / 180)) / 2);
-    return rEarth * Math.atan2(Math.sqrt(temp), Math.sqrt(1 - temp));
-  }
-
   loadGeoInfo = (position) => {
     this.setState({ latitude: position.coords.latitude });
     this.setState({ longitude: position.coords.longitude });
@@ -35,8 +23,8 @@ class GeoInfo extends React.Component {
       console.log("User denied the request for Geolocation.");
       alert("VotrCrwd needs your location to function properly");
     } else {
-      console.log("lol loser");
-      alert("lol loser");
+      console.log("Test");
+      alert("Test");
     }
     return null;
   }
