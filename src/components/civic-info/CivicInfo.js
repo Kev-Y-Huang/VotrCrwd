@@ -18,6 +18,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddressInput from "../AddressInput/AddressInput";
 import GoogleMaps from "../GoogleMaps/GoogleMaps";
 import LocationCard from "../cards/LocationCard";
+import {FirebaseContext} from "../Firebase"
 
 class CivicInfo extends React.Component {
   constructor(props) {
@@ -133,13 +134,17 @@ class CivicInfo extends React.Component {
             >
               <Typography>Early Vote Locations</Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              <Box width={1}>
-                {this.state.earlyLocations.map((location, index) => {
-                  return <LocationCard location={location} key={`location-${index}`}/>;
-                })}
-              </Box>
-            </AccordionDetails>
+            <FirebaseContext.Consumer>
+              {firebase => (
+                <AccordionDetails>
+                  <Box width={1}>
+                    {this.state.earlyLocations.map((location, index) => {
+                      return <LocationCard location={location} key={`location-${index}`} firebase={firebase}/>;
+                    })}
+                  </Box>
+                </AccordionDetails>
+              )}
+            </FirebaseContext.Consumer>
           </Accordion>}
           {this.state.dropOffLocations.length !== 0 && <Accordion>
             <AccordionSummary
@@ -149,13 +154,17 @@ class CivicInfo extends React.Component {
             >
               <Typography>Drop Off Locations</Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              <Box width={1}>
-                {this.state.dropOffLocations.map((location, index) => {
-                  return <LocationCard location={location} key={`location-${index}`}/>;
-                })}
-              </Box>
-            </AccordionDetails>
+            <FirebaseContext.Consumer>
+              {firebase => (
+                <AccordionDetails>
+                  <Box width={1}>
+                    {this.state.dropOffLocations.map((location, index) => {
+                      return <LocationCard location={location} key={`location-${index}`} firebase={firebase}/>;
+                    })}
+                  </Box>
+                </AccordionDetails>
+              )}
+            </FirebaseContext.Consumer>
           </Accordion>}
           {this.state.votingLocations.length !== 0 && <Accordion>
             <AccordionSummary
@@ -165,13 +174,17 @@ class CivicInfo extends React.Component {
             >
               <Typography>Polling Locations</Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              <Box width={1}>
-                {this.state.votingLocations.map((location, index) => {
-                  return <LocationCard location={location} key={`location-${index}`}/>;
-                })}
-              </Box>
-            </AccordionDetails>
+            <FirebaseContext.Consumer>
+              {firebase => (
+                <AccordionDetails>
+                  <Box width={1}>
+                    {this.state.votingLocations.map((location, index) => {
+                      return <LocationCard location={location} key={`location-${index}`} firebase={firebase}/>;
+                    })}
+                  </Box>
+                </AccordionDetails>
+              )}
+            </FirebaseContext.Consumer>
           </Accordion>}
         </Grid>
         {this.state.earlyLocations.length !== 0 && <Grid item xs={6}>

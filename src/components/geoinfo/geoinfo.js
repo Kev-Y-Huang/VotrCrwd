@@ -1,5 +1,4 @@
 import React from "react";
-import { withFirebase } from '../Firebase';
 
 class GeoInfo extends React.Component {
   constructor(props) {
