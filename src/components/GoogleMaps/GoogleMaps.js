@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {GoogleApiWrapper, InfoWindow, Map, Marker} from "google-maps-react";
+import React, { Component } from "react";
+import { GoogleApiWrapper, InfoWindow, Map, Marker } from "google-maps-react";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 
@@ -9,87 +9,87 @@ const mapStyles = [
     elementType: "geometry",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "administrative.neighborhood",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "road",
     elementType: "labels",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "road",
     elementType: "labels.icon",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "road.arterial",
     elementType: "labels",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "road.highway",
     elementType: "labels",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "road.local",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "transit",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "water",
     elementType: "labels.text",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
-  }
+        visibility: "off",
+      },
+    ],
+  },
 ];
 
 export class GoogleMaps extends Component {
@@ -104,9 +104,9 @@ export class GoogleMaps extends Component {
         zoom: 4,
         center: {
           lat: 39.5,
-          lng: -98.35
-        }
-      }
+          lng: -98.35,
+        },
+      },
     };
   }
 
@@ -122,23 +122,22 @@ export class GoogleMaps extends Component {
 
   _mapLoaded(mapProps, map) {
     map.setOptions({
-      styles: mapStyles
+      styles: mapStyles,
     });
   }
-
 
   onMarkerClick = (props, marker) =>
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
-      showingInfoWindow: true
+      showingInfoWindow: true,
     });
 
   onMapClicked = () => {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
-        activeMarker: null
+        activeMarker: null,
       });
     }
   };
@@ -147,33 +146,35 @@ export class GoogleMaps extends Component {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
-        activeMarker: null
+        activeMarker: null,
       });
     }
   };
 
   MarkerUpdater = () => {
-    let markerArr = this.props.locations.map((location, index) =>
+    let markerArr = this.props.locations.map((location, index) => (
       <Marker
         key={`marker-${index}`}
         onClick={this.onMarkerClick}
         name={location.type}
         position={{
           lat: location.latitude,
-          lng: location.longitude
+          lng: location.longitude,
+        }}
+      />
+    ));
+    markerArr.push(
+      <Marker
+        key={"marker-home"}
+        onClick={this.onMarkerClick}
+        name={"Home Address"}
+        position={{
+          lat: this.props.home.geometry.location.lat,
+          lng: this.props.home.geometry.location.lng,
         }}
       />
     );
-    markerArr.push(<Marker
-      key={"marker-home"}
-      onClick={this.onMarkerClick}
-      name={"Home Address"}
-      position={{
-        lat: this.props.home.geometry.location.lat,
-        lng: this.props.home.geometry.location.lng
-      }}
-    />);
-    this.setState({markers: markerArr});
+    this.setState({ markers: markerArr });
   };
 
   render() {
@@ -182,12 +183,18 @@ export class GoogleMaps extends Component {
         <Box height={400}>
           <Map
             google={this.props.google}
-            zoom={this.state.markers.length === 0 ? this.state.initStyle.zoom : 8}
-            containerStyle={{position: "relative"}}
-            center={this.state.markers.length === 0 ? this.state.initStyle.center : {
-              lat: this.props.home.geometry.location.lat,
-              lng: this.props.home.geometry.location.lng
-            }}
+            zoom={
+              this.state.markers.length === 0 ? this.state.initStyle.zoom : 8
+            }
+            containerStyle={{ position: "relative" }}
+            center={
+              this.state.markers.length === 0
+                ? this.state.initStyle.center
+                : {
+                    lat: this.props.home.geometry.location.lat,
+                    lng: this.props.home.geometry.location.lng,
+                  }
+            }
             initialCenter={this.state.initStyle.center}
             onClick={this.onMapClicked}
             onReady={(mapProps, map) => this._mapLoaded(mapProps, map)}
@@ -201,7 +208,9 @@ export class GoogleMaps extends Component {
               onClose={this.onClose}
             >
               <div>
-                <p style={{color: "black"}}>{this.state.selectedPlace.name}</p>
+                <p style={{ color: "black" }}>
+                  {this.state.selectedPlace.name}
+                </p>
               </div>
             </InfoWindow>
           </Map>
@@ -211,4 +220,6 @@ export class GoogleMaps extends Component {
   }
 }
 
-export default GoogleApiWrapper({apiKey: process.env.REACT_APP_GOOGLE_API_KEY})(GoogleMaps);
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+})(GoogleMaps);
