@@ -4,7 +4,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 
@@ -20,7 +20,7 @@ function loadScript(src, position, id) {
   position.appendChild(script);
 }
 
-const autocompleteService = {current: null};
+const autocompleteService = { current: null };
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -41,7 +41,7 @@ export default function AddressInput(props) {
       loadScript(
         `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
         document.querySelector("head"),
-        "google-maps",
+        "google-maps"
       );
     }
 
@@ -53,7 +53,7 @@ export default function AddressInput(props) {
       throttle((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
       }, 200),
-    [],
+    []
   );
 
   React.useEffect(() => {
@@ -71,7 +71,7 @@ export default function AddressInput(props) {
       return undefined;
     }
 
-    fetch({input: inputValue}, (results) => {
+    fetch({ input: inputValue }, (results) => {
       if (active) {
         let newOptions = [];
 
@@ -96,7 +96,9 @@ export default function AddressInput(props) {
     <Autocomplete
       id="google-map-demo"
       fullWidth={true}
-      getOptionLabel={(option) => (typeof option === "string" ? option : option.description)}
+      getOptionLabel={(option) =>
+        typeof option === "string" ? option : option.description
+      }
       filterOptions={(x) => x}
       options={options}
       autoComplete
@@ -112,23 +114,32 @@ export default function AddressInput(props) {
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Input Address" variant="outlined" fullWidth/>
+        <TextField
+          {...params}
+          label="Input Address"
+          variant="outlined"
+          fullWidth
+        />
       )}
       renderOption={(option) => {
-        const matches = option.structured_formatting.main_text_matched_substrings;
+        const matches =
+          option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
           option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length]),
+          matches.map((match) => [match.offset, match.offset + match.length])
         );
 
         return (
           <Grid container alignItems="center">
             <Grid item>
-              <LocationOnIcon className={classes.icon}/>
+              <LocationOnIcon className={classes.icon} />
             </Grid>
             <Grid item xs>
               {parts.map((part, index) => (
-                <span key={index} style={{fontWeight: part.highlight ? 700 : 400}}>
+                <span
+                  key={index}
+                  style={{ fontWeight: part.highlight ? 700 : 400 }}
+                >
                   {part.text}
                 </span>
               ))}

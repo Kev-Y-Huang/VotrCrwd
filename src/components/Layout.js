@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
 import Header from "./Header";
-import {Box} from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
-const Layout = ({children, pageName}) => {
+const Layout = ({ children, pageName }) => {
   let className = "";
 
   if (pageName) {
@@ -14,15 +14,13 @@ const Layout = ({children, pageName}) => {
 
   return (
     <>
-      <Helmet bodyAttributes={{class: className}}>
+      <Helmet bodyAttributes={{ class: className }}>
         <title>VotrCrwd</title>
       </Helmet>
-      <Box
-        justifyContent="center"
-        alignItems="center">
-        <Header/>
+      <Box justifyContent="center" alignItems="center">
+        <Header />
         <Box
-          width={{xs: "80%", md: "60%"}}
+          width={{ xs: "80%", md: "60%" }}
           justifyContent="center"
           alignItems="center"
           className={"App"}
